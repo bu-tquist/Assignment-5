@@ -1,0 +1,4 @@
+(1) My program uses 7,340,032 bytes of memory
+(2) My program uses 6,860,800 bytes of memory
+(3) Normal uses less memory but takes a consistent amount of time where as MMap uses more memory but is much quicker. this is most likely due to MMap taking advantage of cache memory
+(4) Minor Page faults occur when accesssing a addresss in memory that is valid but the cpu doesn't have hardware mapping for. Major page fault happens when data is requested by a process and the data doesn't exist in physical RAM
