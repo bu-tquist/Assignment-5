@@ -73,14 +73,20 @@ int main(int argc, char** argv){
     int kernel[3][3] = {{1,1,1},{1,1,1},{1,1,1}};
 
     if(strcmp(mode, "mmap")== 0){
-        loadimage_mmap(fileName, img);
+        if(loadimage_mmap(fileName, img) != 0){
+            free(img);
+            return -1;
+        }
 
         struct image* kernelImage = apply_kernel(img, (int*)kernel, 3, 1.0f / 9.0f);
 
         saveimage_mmap(output, kernelImage);
 
+        
+
         free(kernelImage->pixels);
         free(kernelImage);
+
 
     }
     else if(strcmp(mode, "convert")== 0){
@@ -94,6 +100,7 @@ int main(int argc, char** argv){
         loadimage_mmap(fileName, img);
 
         saveimage(output, img);
+
     }
     else if(strcmp(mode, "fault")== 0){
         generate_pagefault();
@@ -116,7 +123,9 @@ int main(int argc, char** argv){
 
     }
 
-    free(img->pixels);
+    if(img->pixels != NULL){
+        free(img->pixels);
+    }
     free(img);
 
     return 0;

@@ -29,6 +29,10 @@
 int loadimage_mmap(char* filename, struct image* image) {
 	int fileload = open(filename, O_RDONLY);
 
+	if(fileload < 0){
+		return -1;
+	}
+
 	int num_pixels = image->width * image->height;
 
 	int map_length = sizeof(struct image) + (num_pixels * sizeof(struct pixel));
@@ -37,12 +41,18 @@ int loadimage_mmap(char* filename, struct image* image) {
 
 	close(fileload);
 
+	if(mapped == MAP_FAILED){
+		return -1;
+	}
+
 	struct image* filehead = (struct image*) mapped;
 
 	image->width = filehead->width;
 	image->height = filehead->height;
 
 	image->pixels = (struct pixel*)((char*)mapped + sizeof(struct image));
+
+	
 
 	
 	return 0;
